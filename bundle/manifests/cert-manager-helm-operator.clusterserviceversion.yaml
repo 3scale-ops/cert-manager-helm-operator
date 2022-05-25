@@ -1,0 +1,674 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: |-
+      [
+        {
+          "apiVersion": "operator.cert-manager.io/v1alpha1",
+          "kind": "OperatorConfig",
+          "metadata": {
+            "name": "operatorconfig-sample"
+          },
+          "spec": {
+            "affinity": {},
+            "cainjector": {
+              "affinity": {},
+              "containerSecurityContext": {},
+              "enabled": true,
+              "extraArgs": [],
+              "image": {
+                "pullPolicy": "IfNotPresent",
+                "repository": "quay.io/jetstack/cert-manager-cainjector"
+              },
+              "nodeSelector": {},
+              "podLabels": {},
+              "replicaCount": 1,
+              "resources": {},
+              "securityContext": {
+                "runAsNonRoot": true
+              },
+              "serviceAccount": {
+                "automountServiceAccountToken": true,
+                "create": true
+              },
+              "strategy": {},
+              "tolerations": []
+            },
+            "clusterResourceNamespace": "",
+            "containerSecurityContext": {},
+            "extraArgs": [],
+            "extraEnv": [],
+            "featureGates": "",
+            "global": {
+              "imagePullSecrets": [],
+              "leaderElection": {
+                "namespace": "kube-system"
+              },
+              "logLevel": 2,
+              "podSecurityPolicy": {
+                "enabled": false,
+                "useAppArmor": true
+              },
+              "priorityClassName": "",
+              "rbac": {
+                "create": true
+              }
+            },
+            "image": {
+              "pullPolicy": "IfNotPresent",
+              "repository": "quay.io/jetstack/cert-manager-controller"
+            },
+            "ingressShim": {},
+            "installCRDs": false,
+            "nodeSelector": {},
+            "podLabels": {},
+            "prometheus": {
+              "enabled": true,
+              "servicemonitor": {
+                "enabled": false,
+                "honorLabels": false,
+                "interval": "60s",
+                "labels": {},
+                "path": "/metrics",
+                "prometheusInstance": "default",
+                "scrapeTimeout": "30s",
+                "targetPort": 9402
+              }
+            },
+            "replicaCount": 1,
+            "resources": {},
+            "securityContext": {
+              "runAsNonRoot": true
+            },
+            "serviceAccount": {
+              "automountServiceAccountToken": true,
+              "create": true
+            },
+            "startupapicheck": {
+              "affinity": {},
+              "backoffLimit": 4,
+              "enabled": true,
+              "extraArgs": [],
+              "image": {
+                "pullPolicy": "IfNotPresent",
+                "repository": "quay.io/jetstack/cert-manager-ctl"
+              },
+              "jobAnnotations": {
+                "helm.sh/hook": "post-install",
+                "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded",
+                "helm.sh/hook-weight": "1"
+              },
+              "nodeSelector": {},
+              "podLabels": {},
+              "rbac": {
+                "annotations": {
+                  "helm.sh/hook": "post-install",
+                  "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded",
+                  "helm.sh/hook-weight": "-5"
+                }
+              },
+              "resources": {},
+              "securityContext": {
+                "runAsNonRoot": true
+              },
+              "serviceAccount": {
+                "annotations": {
+                  "helm.sh/hook": "post-install",
+                  "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded",
+                  "helm.sh/hook-weight": "-5"
+                },
+                "automountServiceAccountToken": true,
+                "create": true
+              },
+              "timeout": "1m",
+              "tolerations": []
+            },
+            "strategy": {},
+            "tolerations": [],
+            "volumeMounts": [],
+            "volumes": [],
+            "webhook": {
+              "affinity": {},
+              "config": null,
+              "containerSecurityContext": {},
+              "extraArgs": [],
+              "hostNetwork": false,
+              "image": {
+                "pullPolicy": "IfNotPresent",
+                "repository": "quay.io/jetstack/cert-manager-webhook"
+              },
+              "livenessProbe": {
+                "failureThreshold": 3,
+                "initialDelaySeconds": 60,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 1
+              },
+              "nodeSelector": {},
+              "podLabels": {},
+              "readinessProbe": {
+                "failureThreshold": 3,
+                "initialDelaySeconds": 5,
+                "periodSeconds": 5,
+                "successThreshold": 1,
+                "timeoutSeconds": 1
+              },
+              "replicaCount": 1,
+              "resources": {},
+              "securePort": 10250,
+              "securityContext": {
+                "runAsNonRoot": true
+              },
+              "serviceAccount": {
+                "automountServiceAccountToken": true,
+                "create": true
+              },
+              "serviceLabels": {},
+              "serviceType": "ClusterIP",
+              "strategy": {},
+              "timeoutSeconds": 10,
+              "tolerations": [],
+              "url": {}
+            }
+          }
+        }
+      ]
+    capabilities: Full Lifecycle
+    categories: Integration & Delivery
+    containerImage: quay.io/3scale/cert-manager-helm-operator
+    createdAt: 2022-05-25T15:49:31GMT
+    description: |-
+      cert-manager - Helm operator is an operator developed with OperatorSDK,
+      that deploys and manges a cert-manager installation using the latest
+      available cert-manager helm chart.
+    operators.operatorframework.io/builder: operator-sdk-v1.15.0+git
+    operators.operatorframework.io/project_layout: helm.sdk.operatorframework.io/v1
+    repository: https://github.com/3scale-ops/cert-manager-helm-operator
+    support: Red Hat
+  name: cert-manager-helm-operator.v1.7.2
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - kind: CertificateRequest
+      name: certificaterequests.cert-manager.io
+      version: v1
+    - kind: Certificate
+      name: certificates.cert-manager.io
+      version: v1
+    - kind: Challenge
+      name: challenges.acme.cert-manager.io
+      version: v1
+    - kind: ClusterIssuer
+      name: clusterissuers.cert-manager.io
+      version: v1
+    - kind: Issuer
+      name: issuers.cert-manager.io
+      version: v1
+    - kind: OperatorConfig
+      name: operatorconfigs.operator.cert-manager.io
+      version: v1alpha1
+    - kind: Order
+      name: orders.acme.cert-manager.io
+      version: v1
+  description: |
+    cert-manager - Helm operator is an operator developed using the OperatorSDK Helm framework,
+    that deploys and manges a cert-manager installation using the latest available cert-manager helm chart.
+
+    cert-manager is a Kubernetes add-on to automate the management and
+    issuance of TLS certificates from various issuing sources. It will ensure certificates
+    are valid and up to date periodically, and attempt to renew certificates at an
+    appropriate time before expiry.
+  displayName: cert-manager - Helm based operator
+  icon:
+  - base64data: |
+      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
+      //Uml9iTKxfr0AAAAASUVORK5CYII=
+    mediatype: image/png
+  install:
+    spec:
+      clusterPermissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - create
+        - apiGroups:
+          - operator.cert-manager.io
+          resources:
+          - operatorconfigs
+          - operatorconfigs/status
+          - operatorconfigs/finalizers
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - rbac.authorization.k8s.io
+          resources:
+          - clusterrolebindings
+          - clusterroles
+          verbs:
+          - '*'
+        - apiGroups:
+          - admissionregistration.k8s.io
+          resources:
+          - mutatingwebhookconfigurations
+          - validatingwebhookconfigurations
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          - serviceaccounts
+          - services
+          verbs:
+          - '*'
+        - apiGroups:
+          - rbac.authorization.k8s.io
+          resources:
+          - rolebindings
+          - roles
+          verbs:
+          - '*'
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          verbs:
+          - '*'
+        - apiGroups:
+          - authentication.k8s.io
+          resources:
+          - tokenreviews
+          verbs:
+          - create
+        - apiGroups:
+          - authorization.k8s.io
+          resources:
+          - subjectaccessreviews
+          verbs:
+          - create
+        serviceAccountName: cert-manager-helm-operator-controller-manager
+      deployments:
+      - name: cert-manager-helm-operator-controller-manager
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              control-plane: controller-manager
+          strategy: {}
+          template:
+            metadata:
+              annotations:
+                kubectl.kubernetes.io/default-container: manager
+              labels:
+                control-plane: controller-manager
+            spec:
+              containers:
+              - args:
+                - --secure-listen-address=0.0.0.0:8443
+                - --upstream=http://127.0.0.1:8080/
+                - --logtostderr=true
+                - --v=0
+                image: gcr.io/kubebuilder/kube-rbac-proxy:v0.8.0
+                name: kube-rbac-proxy
+                ports:
+                - containerPort: 8443
+                  name: https
+                  protocol: TCP
+                resources:
+                  limits:
+                    cpu: 500m
+                    memory: 128Mi
+                  requests:
+                    cpu: 5m
+                    memory: 64Mi
+              - args:
+                - --health-probe-bind-address=:8081
+                - --metrics-bind-address=127.0.0.1:8080
+                - --leader-elect
+                - --leader-election-id=cert-manager-helm-operator
+                image: quay.io/3scale/cert-manager-helm-operator:v1.7.2
+                livenessProbe:
+                  httpGet:
+                    path: /healthz
+                    port: 8081
+                  initialDelaySeconds: 15
+                  periodSeconds: 20
+                name: manager
+                readinessProbe:
+                  httpGet:
+                    path: /readyz
+                    port: 8081
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                resources:
+                  limits:
+                    cpu: 500m
+                    memory: 128Mi
+                  requests:
+                    cpu: 10m
+                    memory: 64Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+              securityContext:
+                runAsNonRoot: true
+              serviceAccountName: cert-manager-helm-operator-controller-manager
+              terminationGracePeriodSeconds: 10
+      permissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - create
+          - patch
+        serviceAccountName: cert-manager-helm-operator-controller-manager
+    strategy: deployment
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: false
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - Security
+  - Certificates
+  links:
+  - name: Cert Manager
+    url: https://cert-manager.io
+  - name: Cert Manager Helm Operator
+    url: https://github.com/3scale-ops/cert-manager-helm-operator
+  maintainers:
+  - email: 3scale-operations@redhat.com
+    name: 3scale Ops
+  maturity: alpha
+  provider:
+    name: Red Hat
+    url: https://www.redhat.com
+  version: 1.7.2

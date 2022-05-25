@@ -1,0 +1,24 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cert-manager-helm-operator-manager-role
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cert-manager-helm-operator-manager-rolebinding
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cert-manager-helm-operator-controller-manager
+  namespace: cert-manager-helm-operator-system
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cert-manager-helm-operator-controller-manager
+  namespace: cert-manager-helm-operator-system
+status:
+  readyReplicas: 1

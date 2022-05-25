@@ -1,0 +1,6 @@
+# Use the 'create api' subcommand to add watches to this file.
+- group: operator.cert-manager.io
+  version: v1alpha1
+  kind: OperatorConfig
+  chart: helm-charts/cert-manager
+#+kubebuilder:scaffold:watch
