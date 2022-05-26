@@ -568,6 +568,11 @@ spec:
                 - --leader-elect
                 - --leader-election-id=cert-manager-helm-operator
                 - --zap-devel
+                env:
+                - name: WATCH_NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.annotations['olm.targetNamespaces']
                 image: quay.io/3scale/cert-manager-helm-operator:v1.7.2
                 livenessProbe:
                   httpGet:
