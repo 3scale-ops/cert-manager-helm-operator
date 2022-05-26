@@ -325,6 +325,7 @@ kind-delete: kind ## Deletes the k8s kind cluster
 kind-deploy: export KUBECONFIG = ${PWD}/kubeconfig
 kind-deploy: container-build kind ## Deploys the operator in the k8s kind cluster
 	$(KIND) load docker-image $(IMG)
+	$(KUSTOMIZE) build config/testing | kubectl apply -f -
 	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
 	$(KUSTOMIZE) build config/default | kubectl apply -f -
 
