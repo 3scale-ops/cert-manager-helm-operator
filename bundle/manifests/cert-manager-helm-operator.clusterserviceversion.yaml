@@ -567,7 +567,6 @@ spec:
                 - --metrics-bind-address=:8080
                 - --leader-elect
                 - --leader-election-id=cert-manager-helm-operator
-                - --zap-devel
                 env:
                 - name: WATCH_NAMESPACE
                   valueFrom:

@@ -13,7 +13,6 @@ spec:
             - --metrics-bind-address=:8080
             - --leader-elect
             - --leader-election-id=cert-manager-helm-operator
-            - --zap-devel
           ports:
             - containerPort: 8080
               name: metrics
