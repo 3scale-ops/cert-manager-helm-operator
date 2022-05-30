@@ -261,6 +261,7 @@ endif
 HELM_CHARTS_PATH="$(PWD)/helm-charts"
 HELM_CHART_NAME="cert-name"
 HELM_CHART_REPO="https://charts.jetstack.io"
+HELM_CHART_VERSION=$(shell echo $(VERSION) | sed 's/\([0-9.]\+\).*/\1/g')
 download-helm-chart: helm ## Download original helm chart into operator directory helm-charts/
 	@$(HELM) repo add jetstack $(HELM_CHART_REPO) >/dev/null \
 		|| { echo "Unable to add $(HELM_CHART_REPO) reposirtory"; exit 1; }
@@ -268,8 +269,8 @@ download-helm-chart: helm ## Download original helm chart into operator director
 		|| { mkdir -p $(HELM_CHARTS_PATH)/cert-manager; } \
 		&& { find $(HELM_CHARTS_PATH)/cert-manager -delete; }
 	@$(HELM) pull \
-		--untar --untardir ${HELM_CHARTS_PATH} \
-		--version=$(VERSION) jetstack/cert-manager
+		--untar --untardir $(HELM_CHARTS_PATH) \
+		--version=$(HELM_CHART_VERSION) jetstack/cert-manager
 	@sed -i "s|installCRDs: [^ ]*|installCRDs: false|g" \
 		$(HELM_CHARTS_PATH)/cert-manager/values.yaml
 
