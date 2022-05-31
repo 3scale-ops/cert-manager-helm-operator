@@ -1,0 +1,16 @@
+domain: cert-manager.io
+layout:
+- helm.sdk.operatorframework.io/v1
+plugins:
+  manifests.sdk.operatorframework.io/v2: {}
+  scorecard.sdk.operatorframework.io/v2: {}
+projectName: cert-manager-helm-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  domain: cert-manager.io
+  group: operator
+  kind: OperatorConfig
+  version: v1alpha1
+version: "3"
