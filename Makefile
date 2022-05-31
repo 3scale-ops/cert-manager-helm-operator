@@ -270,7 +270,8 @@ download-helm-chart: helm ## Download original helm chart into operator director
 		&& { find $(HELM_CHARTS_PATH)/cert-manager -delete; }
 	@$(HELM) pull \
 		--untar --untardir $(HELM_CHARTS_PATH) \
-		--version=$(HELM_CHART_VERSION) jetstack/cert-manager
+		--version=$(HELM_CHART_VERSION) jetstack/cert-manager \
+		&& echo "jetstack/cert-manager@$(HELM_CHART_VERSION) downloaded to $(HELM_CHARTS_PATH)"
 	@sed -i "s|installCRDs: [^ ]*|installCRDs: false|g" \
 		$(HELM_CHARTS_PATH)/cert-manager/values.yaml
 
