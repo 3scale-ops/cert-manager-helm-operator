@@ -304,7 +304,10 @@ catalog-retag-latest:
 bundle-publish: test-e2e bundle-build bundle-push catalog-build catalog-push catalog-retag-latest ## Publish new release in catalog
 
 get-new-release:
-	@hack/new-release.sh v$(VERSION)
+	@if [[ v$(VERSION) == *"-alpha"* ]]; then echo; \
+	elif curl -o /dev/null --fail --silent \
+		"$(GH_REPO_RELEASES_URL)/v$(VERSION)"; then echo; \
+	else echo "v$(VERSION)"; fi;
 
 ###################################################
 #### Custom Targets to manually test with Kind ####
