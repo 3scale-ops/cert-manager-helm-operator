@@ -29,6 +29,8 @@ make container-push
 make bundle-publish
 ```
 
+A real example of an alpha release can be found at [release: v1.8.0-alpha.1](https://github.com/3scale-ops/cert-manager-helm-operator/commit/dbedc3f4d990553a283d975cd08645d7341097aa) commit.
+
 ## Stable
 
 * Execute the following target to create appropiate `alpha` and `stable` bundle files:
@@ -36,5 +38,7 @@ make bundle-publish
 ```bash
 make prepare-stable-release
 ```
+A real example of a stable release can be found at [release: v1.8.0](https://github.com/3scale-ops/cert-manager-helm-operator/commit/82b878c3e386f7166bcd3d0ef56c08d15136ee08) commit.
 
 * Then open a [Pull Request](https://github.com/3scale-ops/cert-manager-helm-operator/pulls), and a GitHub Action will automatically detect if it is new release or not, in order to create it by building/pushing new operator, bundle and catalog images, as well as creating a GitHub release draft.
+

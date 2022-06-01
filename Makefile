@@ -3,7 +3,7 @@
 # To re-generate a bundle for another specific version without changing the standard setup, you can:
 # - use the VERSION as arg of the bundle target (e.g make bundle VERSION=0.0.2)
 # - use environment variables to overwrite this value (e.g export VERSION=0.0.2)
-VERSION ?= 1.7.2
+VERSION ?= 1.8.0
 
 # CHANNELS define the bundle channels used in the bundle.
 # Add a new line here if you would like to change its default config. (E.g CHANNELS = "candidate,fast,stable")
@@ -120,7 +120,7 @@ endif
 endif
 
 .PHONY: bundle
-bundle: operator-sdk kustomize ## Generate bundle manifests and metadata, then validate generated files.
+bundle: operator-sdk kustomize helm-chart ## Generate bundle manifests and metadata, then validate generated files.
 	$(OPERATOR_SDK) generate kustomize manifests -q
 	cd config/manager && $(KUSTOMIZE) edit set image controller=$(IMG)
 	$(KUSTOMIZE) build config/manifests | $(OPERATOR_SDK) generate bundle -q --overwrite --version $(VERSION) $(BUNDLE_METADATA_OPTS)
@@ -160,10 +160,10 @@ CATALOG_IMG ?= $(IMAGE_TAG_BASE)-catalog:v$(VERSION)
 # Custom default catalog base image to append bundles to
 CATALOG_BASE_IMG ?= $(IMAGE_TAG_BASE)-catalog:latest
 
-# # Set CATALOG_BASE_IMG to an existing catalog image tag to add $BUNDLE_IMGS to that image.
-# ifneq ($(origin CATALOG_BASE_IMG), undefined)
-# FROM_INDEX_OPT := --from-index $(CATALOG_BASE_IMG)
-# endif
+# Set CATALOG_BASE_IMG to an existing catalog image tag to add $BUNDLE_IMGS to that image.
+ifneq ($(origin CATALOG_BASE_IMG), undefined)
+FROM_INDEX_OPT := --from-index $(CATALOG_BASE_IMG)
+endif
 
 # Build a catalog image by adding bundle images to an empty catalog using the operator package manager tool, 'opm'.
 # This recipe invokes 'opm' in 'semver' bundle add mode. For more information on add modes, see:
@@ -270,7 +270,8 @@ download-helm-chart: helm ## Download original helm chart into operator director
 		&& { find $(HELM_CHARTS_PATH)/cert-manager -delete; }
 	@$(HELM) pull \
 		--untar --untardir $(HELM_CHARTS_PATH) \
-		--version=$(HELM_CHART_VERSION) jetstack/cert-manager
+		--version=$(HELM_CHART_VERSION) jetstack/cert-manager \
+		&& echo "jetstack/cert-manager@$(HELM_CHART_VERSION) downloaded to $(HELM_CHARTS_PATH)"
 	@sed -i "s|installCRDs: [^ ]*|installCRDs: false|g" \
 		$(HELM_CHARTS_PATH)/cert-manager/values.yaml
 
@@ -281,7 +282,9 @@ render-cdrs-from-helm-chart: helm download-helm-chart ## Generates the CRD defin
 	@$(HELM) template --set installCRDs=true --include-crds $(HELM_CHARTS_PATH)/cert-manager \
 		| awk -vout=$(TMP_FOLDER)/render -F": " \
 			'$$0~/^# Source: /{file=out"/"$$2; system ("mkdir -p $$(dirname "file"); echo ""--- >> "file)} $$0!~/^#/ && $$0!="---"{print $$0 >> file}';
-	@cp  $(TMP_FOLDER)/render/cert-manager/templates/crds.yaml $(PWD)/config/crd/bases/cert-manager.io_crds.yaml
+	@cat  $(TMP_FOLDER)/render/cert-manager/templates/crds.yaml \
+		| sed "s@cert-manager.io/inject-ca-from-secret.*@cert-manager.io/inject-apiserver-ca: 'true'@g" \
+		> $(PWD)/config/crd/bases/cert-manager.io_crds.yaml
 	@cd  $(PWD)/config/crd && $(KUSTOMIZE) edit add resource bases/cert-manager.io_crds.yaml
 	@test ! -d $(TMP_FOLDER)/render || find $(TMP_FOLDER)/render -delete;
 
