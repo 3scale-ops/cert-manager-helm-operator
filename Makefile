@@ -120,7 +120,7 @@ endif
 endif
 
 .PHONY: bundle
-bundle: operator-sdk kustomize ## Generate bundle manifests and metadata, then validate generated files.
+bundle: operator-sdk kustomize helm-chart ## Generate bundle manifests and metadata, then validate generated files.
 	$(OPERATOR_SDK) generate kustomize manifests -q
 	cd config/manager && $(KUSTOMIZE) edit set image controller=$(IMG)
 	$(KUSTOMIZE) build config/manifests | $(OPERATOR_SDK) generate bundle -q --overwrite --version $(VERSION) $(BUNDLE_METADATA_OPTS)
