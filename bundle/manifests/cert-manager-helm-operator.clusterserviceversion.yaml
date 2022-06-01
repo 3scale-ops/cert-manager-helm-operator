@@ -186,7 +186,7 @@ metadata:
     operators.operatorframework.io/project_layout: helm.sdk.operatorframework.io/v1
     repository: https://github.com/3scale-ops/cert-manager-helm-operator
     support: Red Hat
-  name: cert-manager-helm-operator.v1.8.0-alpha.1
+  name: cert-manager-helm-operator.v1.8.0-alpha.2
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -572,7 +572,7 @@ spec:
                   valueFrom:
                     fieldRef:
                       fieldPath: metadata.annotations['olm.targetNamespaces']
-                image: quay.io/3scale/cert-manager-helm-operator:v1.8.0-alpha.1
+                image: quay.io/3scale/cert-manager-helm-operator:v1.8.0-alpha.2
                 livenessProbe:
                   httpGet:
                     path: /healthz
@@ -661,4 +661,4 @@ spec:
   provider:
     name: Red Hat
     url: https://www.redhat.com
-  version: 1.8.0-alpha.1
+  version: 1.8.0-alpha.2

@@ -13,4 +13,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: quay.io/3scale/cert-manager-helm-operator
-  newTag: v1.8.0-alpha.1
+  newTag: v1.8.0-alpha.2
