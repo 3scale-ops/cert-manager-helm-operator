@@ -160,10 +160,10 @@ CATALOG_IMG ?= $(IMAGE_TAG_BASE)-catalog:v$(VERSION)
 # Custom default catalog base image to append bundles to
 CATALOG_BASE_IMG ?= $(IMAGE_TAG_BASE)-catalog:latest
 
-# # Set CATALOG_BASE_IMG to an existing catalog image tag to add $BUNDLE_IMGS to that image.
-# ifneq ($(origin CATALOG_BASE_IMG), undefined)
-# FROM_INDEX_OPT := --from-index $(CATALOG_BASE_IMG)
-# endif
+# Set CATALOG_BASE_IMG to an existing catalog image tag to add $BUNDLE_IMGS to that image.
+ifneq ($(origin CATALOG_BASE_IMG), undefined)
+FROM_INDEX_OPT := --from-index $(CATALOG_BASE_IMG)
+endif
 
 # Build a catalog image by adding bundle images to an empty catalog using the operator package manager tool, 'opm'.
 # This recipe invokes 'opm' in 'semver' bundle add mode. For more information on add modes, see:
