@@ -282,7 +282,9 @@ render-cdrs-from-helm-chart: helm download-helm-chart ## Generates the CRD defin
 	@$(HELM) template --set installCRDs=true --include-crds $(HELM_CHARTS_PATH)/cert-manager \
 		| awk -vout=$(TMP_FOLDER)/render -F": " \
 			'$$0~/^# Source: /{file=out"/"$$2; system ("mkdir -p $$(dirname "file"); echo ""--- >> "file)} $$0!~/^#/ && $$0!="---"{print $$0 >> file}';
-	@cp  $(TMP_FOLDER)/render/cert-manager/templates/crds.yaml $(PWD)/config/crd/bases/cert-manager.io_crds.yaml
+	@cat  $(TMP_FOLDER)/render/cert-manager/templates/crds.yaml \
+		| sed "s@cert-manager.io/inject-ca-from-secret.*@cert-manager.io/inject-apiserver-ca: 'true'@g" \
+		> $(PWD)/config/crd/bases/cert-manager.io_crds.yaml
 	@cd  $(PWD)/config/crd && $(KUSTOMIZE) edit add resource bases/cert-manager.io_crds.yaml
 	@test ! -d $(TMP_FOLDER)/render || find $(TMP_FOLDER)/render -delete;
 
